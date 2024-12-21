@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random YouTube Songs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+
+        #app {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        li {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #6a11cb;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #2575fc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Random YouTube Songs</h1>
+        <button id="generate">Generate Songs</button>
+        <ul id="songList"></ul>
+    </div>
+
+    <script>
+        const songUrls = [
+            "https://www.youtube.com/watch?v=3JZ4pnNtyxQ",
+            "https://www.youtube.com/watch?v=2Vv-BfVoq4g",
+            "https://www.youtube.com/watch?v=RgKAFK5djSk",
+            "https://www.youtube.com/watch?v=JGwWNGJdvx8",
+            "https://www.youtube.com/watch?v=fRh_vgS2dFE",
+            "https://www.youtube.com/watch?v=60ItHLz5WEA",
+            "https://www.youtube.com/watch?v=UceaB4D0jpo",
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "https://www.youtube.com/watch?v=hT_nvWreIhg",
+            "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
+            "https://www.youtube.com/watch?v=kJQP7kiw5Fk",
+            "https://www.youtube.com/watch?v=LsoLEjrDogU",
+            "https://www.youtube.com/watch?v=uxpDa-c-4Mc",
+            "https://www.youtube.com/watch?v=fLexgOxsZu0",
+            "https://www.youtube.com/watch?v=l9PxOanFjxQ",
+            "https://www.youtube.com/watch?v=yKNxeF4KMsY",
+            "https://www.youtube.com/watch?v=XqZsoesa55w",
+            "https://www.youtube.com/watch?v=CevxZvSJLk8",
+            "https://www.youtube.com/watch?v=ft4jcPSLJfY",
+            "https://www.youtube.com/watch?v=PIh2xe4jnpk",
+            "https://www.youtube.com/watch?v=9bZkp7q19f0",
+            "https://www.youtube.com/watch?v=5GL9JoH4Sws",
+            "https://www.youtube.com/watch?v=WILNIXZr2oc",
+            "https://www.youtube.com/watch?v=IcrbM1l_BoI",
+            "https://www.youtube.com/watch?v=8UVNT4wvIGY",
+            "https://www.youtube.com/watch?v=CevxZvSJLk8",
+            "https://www.youtube.com/watch?v=UceaB4D0jpo",
+            "https://www.youtube.com/watch?v=LsoLEjrDogU",
+            "https://www.youtube.com/watch?v=hT_nvWreIhg",
+            "https://www.youtube.com/watch?v=fRh_vgS2dFE",
+            "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
+            "https://www.youtube.com/watch?v=RgKAFK5djSk",
+            "https://www.youtube.com/watch?v=JGwWNGJdvx8",
+            "https://www.youtube.com/watch?v=lTTajzrSkCw",
+            "https://www.youtube.com/watch?v=r5GaAEHvHj0",
+            "https://www.youtube.com/watch?v=UceaB4D0jpo",
+            "https://www.youtube.com/watch?v=PT2_F-1esPk",
+            "https://www.youtube.com/watch?v=xjB6c91_GfM",
+            "https://www.youtube.com/watch?v=TUVcZfQe-Kw",
+            "https://www.youtube.com/watch?v=ID3E3sfmFNc",
+            "https://www.youtube.com/watch?v=OxLSCLrS02U",
+            "https://www.youtube.com/watch?v=9WbCfHutDSE",
+            "https://www.youtube.com/watch?v=1yYV9-KoSUM",
+            "https://www.youtube.com/watch?v=fLexgOxsZu0",
+            "https://www.youtube.com/watch?v=edqH0ofRQrM",
+            "https://www.youtube.com/watch?v=zDh9Tk_dTVs",
+            "https://www.youtube.com/watch?v=XaCrQL_8eMY",
+            "https://www.youtube.com/watch?v=LsoLEjrDogU",
+            "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
+            "https://www.youtube.com/watch?v=hT_nvWreIhg",
+            "https://www.youtube.com/watch?v=CevxZvSJLk8",
+            "https://www.youtube.com/watch?v=RgKAFK5djSk",
+            "https://www.youtube.com/watch?v=JGwWNGJdvx8",
+            "https://www.youtube.com/watch?v=8UVNT4wvIGY",
+            "https://www.youtube.com/watch?v=8rbw3eaf6Fw",
+            "https://www.youtube.com/watch?v=WILNIXZr2oc",
+            "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
+            "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
+            "https://www.youtube.com/watch?v=hT_nvWreIhg",
+            "https://www.youtube.com/watch?v=CevxZvSJLk8",
+            "https://www.youtube.com/watch?v=fRh_vgS2dFE"
+        ];
+
+        const songTitles = [
+            "Charlie Puth - Attention",
+            "Ed Sheeran - Perfect",
+            "Wiz Khalifa - See You Again",
+            "Ed Sheeran - Shape of You",
+            "Justin Bieber - Sorry",
+            "Alan Walker - Faded",
+            "Maroon 5 - Girls Like You",
+            "Rick Astley - Never Gonna Give You Up",
+            "Imagine Dragons - Thunder",
+            "Michael Jackson - Billie Jean",
+            "Luis Fonsi - Despacito",
+            "Beyonce - Halo",
+            "Eminem - Lose Yourself",
+            "Bruno Mars - Uptown Funk",
+            "Taylor Swift - Blank Space",
+            "Coldplay - Yellow",
+            "Pinkfong - Baby Shark",
+            "Katy Perry - Roar",
+            "Adele - Rolling in the Deep",
+            "Maroon 5 - Memories",
+            "PSY - Gangnam Style",
+            "Adele - Hello",
+            "Post Malone - Sunflower",
+            "Gotye - Somebody That I Used To Know",
+            "Katy Perry - Firework",
+            "Shawn Mendes - Stitches",
+            "Lukas Graham - 7 Years",
+            "Ariana Grande - No Tears Left To Cry",
+            "Lady Gaga - Poker Face",
+            "Justin Timberlake - Can’t Stop the Feeling",
+            "Linkin Park - Numb",
+            "The Chainsmokers - Closer",
+            "John Legend - All of Me",
+            "Billie Eilish - Bad Guy",
+            "Sia - Chandelier",
+            "Doja Cat - Say So",
+            "Drake - Hotline Bling",
+            "BTS - Dynamite",
+            "The Weeknd - Blinding Lights",
+            "Ariana Grande - 7 rings",
+            "Dua Lipa - Don't Start Now",
+            "Harry Styles - Watermelon Sugar",
+            "Shawn Mendes - Senorita",
+            "Halsey - Without Me",
+            "ZAYN - Pillowtalk",
+            "Chainsmokers & Coldplay - Something Just Like This",
+            "Ed Sheeran - Thinking Out Loud",
+            "Sam Smith - Stay With Me",
+            "Camila Cabello - Havana",
+            "Adele - Set Fire to the Rain",
+            "The Killers - Mr Brightside",
+            "Twenty One Pilots - Stressed Out",
+            "Fall Out Boy - Sugar We’re Going Down",
+            "Hozier - Take Me to Church",
+            "Queen - Bohemian Rhapsody",
+            "Lorde - Royals",
+            "Ariana Grande - Problem",
+            "Carly Rae Jepsen - Call Me Maybe",
+            "Jason Derulo - Savage Love",
+            "Zedd - Clarity",
+            "Calvin Harris - This Is What You Came For"
+        ];
+
+        const generateButton = document.getElementById('generate');
+        const songList = document.getElementById('songList');
+
+        function generateRandomSongs() {
+            songList.innerHTML = '';
+
+            const indices = [...Array(songUrls.length).keys()];
+            const randomIndices = indices.sort(() => Math.random() - 0.5).slice(0, 5);
+
+            randomIndices.forEach(index => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+
+                link.href = songUrls[index];
+                link.target = '_blank';
+                link.textContent = songTitles[index];
+
+                li.appendChild(link);
+                songList.appendChild(li);
+            });
+        }
+
+        generateButton.addEventListener('click', generateRandomSongs);
+    </script>
+</body>
+</html>
